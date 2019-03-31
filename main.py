@@ -12,7 +12,7 @@ from astral import Astral, Location
 
 PRINTING = True
 TESTING = False
-OVERRIDE = 10
+OVERRIDE = 120
 
 # ARCHIVE_LOCATION = '/Volumes/SW/time-lapse'
 ARCHIVE_LOCATION = '/media/nathan/Data/time-lapse'
@@ -87,7 +87,7 @@ def begin_day(period=3):
     # Get sunrise / sunset
     sun_times = get_sun_times()
     # TODO Change below code from dusk to dawn
-    seconds_wait = (sun_times['dusk'] - 60 * 5) - arrow.now().timestamp
+    seconds_wait = (sun_times['dawn'] - 60 * 5) - arrow.now().timestamp
     # Sleep until 10 mins before sunrise
 
     # Create Filesystem
@@ -103,9 +103,7 @@ def begin_day(period=3):
     if PRINTING:
         print """ffmpeg -pattern_type glob -i '*.png' -c:v libx264 -r 25 -crf 18 -pix_fmt yuv420p %s.mp4""" % vid_name
 
-    # os.system("""ffmpeg -pattern_type glob -i '*.png' -c:v libx264 -r 25 -crf 18 -pix_fmt yuv420p %s.mp4""" % vid_name)
-
-    # Upload video
+    os.system("""ffmpeg -pattern_type glob -i '*.png' -c:v libx264 -r 25 -crf 18 -pix_fmt yuv420p %s.mp4""" % vid_name)
 
 
 if __name__ == '__main__':

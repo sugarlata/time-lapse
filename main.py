@@ -44,6 +44,8 @@ def time_lapse_loop(img_loc, period, sun_times):
     final_time = sun_times['dusk'] + 60 * 10
 
     cam = cv2.VideoCapture(1)
+    cam.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
     i = 0
     while arrow.now().timestamp < final_time:

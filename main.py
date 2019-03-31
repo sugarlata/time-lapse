@@ -1,13 +1,10 @@
 import os
 import cv2
-import pytz
 import arrow
 import datetime
 
 from time import sleep
-from pprint import pprint
-from astral import Astral, Location
-# from creds import Credentials as CREDS
+from astral import Location
 
 
 PRINTING = True
@@ -61,7 +58,7 @@ def time_lapse_loop(img_loc, period, sun_times):
         sleep(period)
 
 
-def get_sun_times():
+def get_sun_times(dt=datetime.datetime.now()):
 
     loc = Location()
     loc.name = 'Melbourne'
@@ -74,7 +71,7 @@ def get_sun_times():
     loc.solar_depression = 'civil'
 
     resp = {}
-    for k, v in loc.sun(datetime.datetime.now()).items():
+    for k, v in loc.sun(dt).items():
 
         resp[k] = arrow.get(v).timestamp
 
@@ -84,17 +81,19 @@ def get_sun_times():
 def begin_day(period=3):
 
     vid_name = str(arrow.now().format('YYYY-MM-DD'))
+
     # Get sunrise / sunset
     sun_times = get_sun_times()
-    # TODO Change below code from dusk to dawn
-    seconds_wait = (sun_times['dawn'] - 60 * 5) - arrow.now().timestamp
-    # Sleep until 10 mins before sunrise
+
+    # Sleep until 10 mins before dawn
+    seconds_wait = (sun_times['dawn'] - 60 * 10) - arrow.now().timestamp
+    if seconds_wait > 0:
+        sleep(seconds_wait)
 
     # Create Filesystem
     ensure_directory_valid(ARCHIVE_LOCATION, str(arrow.now().year), str(arrow.now().month), str(arrow.now().day))
     img_loc = os.path.join(ARCHIVE_LOCATION, str(arrow.now().year), str(arrow.now().month), str(arrow.now().day))
 
-    # sleep(seconds_wait)
     # Begin time lapse loop
     time_lapse_loop(img_loc, period, sun_times)
 

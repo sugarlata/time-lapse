@@ -8,7 +8,7 @@ from os import path as os_path
 from time import sleep
 from pprint import pprint
 from astral import Astral, Location
-from creds import Credentials as CREDS
+# from creds import Credentials as CREDS
 
 
 PRINTING = True

@@ -31,4 +31,4 @@ Finish time: %s""" % (dt, start_time.format('HH:mm'), finish_time.format('HH:mm'
 
 if __name__ == '__main__':
 
-    upload_to_youtube(days_back=0)
+    upload_to_youtube()

@@ -7,9 +7,9 @@ from time import sleep
 from astral import Location
 
 
-PRINTING = True
+PRINTING = False
 TESTING = False
-OVERRIDE = 120
+OVERRIDE = None
 
 # ARCHIVE_LOCATION = '/Volumes/SW/time-lapse'
 ARCHIVE_LOCATION = '/media/nathan/Data/time-lapse'
@@ -100,9 +100,9 @@ def begin_day(period=3):
     # Combine into Video
     os.chdir(img_loc)
     if PRINTING:
-        print """ffmpeg -pattern_type glob -i '*.png' -c:v libx264 -r 25 -crf 18 -pix_fmt yuv420p %s.mp4""" % vid_name
+        print """ffmpeg -y -pattern_type glob -i '*.png' -c:v libx264 -r 25 -crf 18 -pix_fmt yuv420p %s.mp4""" % vid_name
 
-    os.system("""ffmpeg -pattern_type glob -i '*.png' -c:v libx264 -r 25 -crf 18 -pix_fmt yuv420p %s.mp4""" % vid_name)
+    os.system("""ffmpeg -y -pattern_type glob -i '*.png' -c:v libx264 -r 25 -crf 18 -pix_fmt yuv420p %s.mp4""" % vid_name)
 
 
 if __name__ == '__main__':

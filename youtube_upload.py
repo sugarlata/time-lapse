@@ -14,6 +14,7 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
 
+CHUNK_SIZE = 2 * 1024 * 1024
 
 # Explicitly tell the underlying HTTP transport library not to retry, since
 # we are handling retry logic ourselves.
@@ -117,7 +118,7 @@ def initialize_upload(youtube, options):
     # practice, but if you're using Python older than 2.6 or if you're
     # running on App Engine, you should set the chunksize to something like
     # 1024 * 1024 (1 megabyte).
-    media_body=MediaFileUpload(options.file, chunksize=-1, resumable=True)
+    media_body=MediaFileUpload(options.file, chunksize=CHUNK_SIZE, resumable=True)
   )
 
   resumable_upload(insert_request)
@@ -128,10 +129,14 @@ def resumable_upload(insert_request):
   response = None
   error = None
   retry = 0
+  uploaded_size = 0
   while response is None:
     try:
-      print "Uploading file..."
+      print "Uploading file...", "%sMb" % str(uploaded_size * CHUNK_SIZE / (1024 * 1024))
       status, response = insert_request.next_chunk()
+      if response is None:
+         uploaded_size += 1
+         continue
       if 'id' in response:
         print "Video id '%s' was successfully uploaded." % response['id']
       else:

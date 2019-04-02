@@ -38,7 +38,7 @@ def get_image(img_loc, img_name, cam):
 
 def time_lapse_loop(img_loc, period, sun_times):
 
-    final_time = sun_times['dusk'] + 60 * 10
+    final_time = sun_times['dusk'] + 60 * 20
 
     cam = cv2.VideoCapture(1)
     cam.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)

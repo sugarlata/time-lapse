@@ -17,6 +17,7 @@ def upload_to_youtube(days_back=1):
     vid_fn = os.path.join(loc, mp4_fn)
 
     if os.path.exists(vid_fn):
+        os.system('rm %s *.png' % loc)
         sun_times = main.get_sun_times(yestdy)
         start_time = arrow.get(sun_times['dawn'] - 10 * 60 ).format('DD/MM/YYYY HH:mm')
         finish_time = arrow.get(sun_times['dusk'] + 10 * 60).format('DD/MM/YYYY HH:mm')

@@ -2,6 +2,7 @@ import os
 import arrow
 import socket
 import pysftp
+import StringIO
 import datetime
 
 from io import BytesIO
@@ -23,7 +24,7 @@ def identify_hostname():
     return socket.gethostname()
 
 def take_image(camera):
-    stream = BytesIO()
+    stream = StringIO()
     camera.capture(stream, format='jpeg')
 
     stream.seek(0)

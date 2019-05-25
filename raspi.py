@@ -1,9 +1,9 @@
 import os
 import arrow
 import socket
-import pysftp
 import datetime
 
+from ftplib import FTP
 from io import BytesIO
 from time import sleep
 from astral import Location
@@ -32,15 +32,12 @@ def take_image(camera):
 
 def upload_to_server(stream, fn):
 
-    server_details = ServerDetails()
+    sd = ServerDetails()
 
-    with pysftp.Connection(server_details.address,
-                           username=server_details.username,
-                           password=server_details.password) as sftp:
-
-        with sftp.cd(server_details.location):
-            f = sftp.open('image.jpg', 'wb', bufsize=32000)
-            f.write(stream.read())
+    with FTP(sd.address) as ftp:
+        ftp.login(user=sd.username, passwd=sd.password)
+        ftp.cwd(sd.location)
+        ftp.storbinary('STOR image.jpg', stream)
 
 
 if __name__ == '__main__':

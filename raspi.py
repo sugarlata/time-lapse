@@ -39,7 +39,7 @@ def upload_to_server(stream, fn):
                            password=server_details.password) as sftp:
 
         with sftp.cd(server_details.location):
-            f = sftp.open('image.jpg', 'wb')
+            f = sftp.open('image.jpg', 'wb', bufsize=32000)
             f.write(stream.read())
 
 

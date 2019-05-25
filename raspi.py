@@ -34,11 +34,12 @@ def upload_to_server(stream, fn):
 
     sd = ServerDetails()
 
-    with FTP(sd.address) as ftp:
-        ftp.login(user=sd.username, passwd=sd.password)
-        ftp.cwd(sd.location)
-        ftp.storbinary('STOR image.jpg', stream)
-
+    ftp = FTP(sd.address)
+    ftp.login(user=sd.username, passwd=sd.password)
+    ftp.cwd(sd.location)
+    ftp.storbinary('STOR image.jpg', stream)
+    ftp.quit()
+    
 
 if __name__ == '__main__':
     hostname = identify_hostname()

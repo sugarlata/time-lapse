@@ -2,7 +2,6 @@ import os
 import arrow
 import socket
 import pysftp
-import StringIO
 import datetime
 
 from io import BytesIO
@@ -24,7 +23,7 @@ def identify_hostname():
     return socket.gethostname()
 
 def take_image(camera):
-    stream = StringIO()
+    stream = BytesIO()
     camera.capture(stream, format='jpeg')
 
     stream.seek(0)
@@ -40,7 +39,8 @@ def upload_to_server(stream, fn):
                            password=server_details.password) as sftp:
 
         with sftp.cd(server_details.location):
-            sftp.putfo(stream, fn)
+            f = sftp.open('image.jpg', 'wb')
+            f.write(stream.read())
 
 
 if __name__ == '__main__':

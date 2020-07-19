@@ -43,17 +43,21 @@ class TimeLapse:
 
         i = 0
 
+        loop_start = arrow.now().timestamp
         while arrow.now().timestamp < final_time:
+
+            wait_time = loop_start + (i * self._period) - arrow.now().timestamp
+
+            if wait_time > 0:
+                sleep(wait_time)
 
             self._img_cap.get_image(self._img_loc, str(arrow.now().timestamp))
 
             if config.TLConfig.override:
                 if i > config.TLConfig.override:
                     break
-                else:
-                    i += 1
-
-            sleep(self._period)
+                
+            i += 1
 
     def _finish_loop(self):
 

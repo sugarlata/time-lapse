@@ -25,10 +25,10 @@ class ImageCollect:
 
     def get_image(self, img_loc, img_name):
 
-        fn = os.path.join(img_loc, '%s.jpg' % img_name)
+        fn = os.path.join(img_loc, '%s.png' % img_name)
 
         if config.Misc.printing:
-            print('Creating', fn)
+            print('Creating %s' % fn)
 
         if not config.Misc.testing:
             self._cam.capture(fn, format='png')

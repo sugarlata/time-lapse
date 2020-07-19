@@ -1,7 +1,12 @@
 # Module to collect, store, and process images
 import os
-import cv2
 import config
+
+
+from time import sleep
+from io import BytesIO
+from picamera import PiCamera
+
 
 class ImageCollect(Object):
 
@@ -11,17 +16,23 @@ class ImageCollect(Object):
 
     def _create_cam(self):
 
-        self._cam = cv2.VideoCapture
-        self._cam.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-        self._cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)        
+        self._cam = PiCamera()
+        self._cam.resolution = (1024, 768)
+        self._cam.start_preview()
+        self._start_preview_time = arrow.now().timestamp
 
     def get_image(self, img_loc, img_name):
 
-        fn = os.path.join(img_loc, '%s.png' % img_name)
+        fn = os.path.join(img_loc, '%s.jpg' % img_name)
 
         if config.Misc.printing:
             print('Creating', fn)
 
+        time_wait = arrow.now().timestamp - self.start_preview_time
+
+        if time_wait > 0:
+            sleep(time_wait)     
+
         if not config.Misc.testing:
-            frame = self._cam.read()[1]
-            cv2.imwrite(fn, frame)
+            stream = BytesIO()
+            self._cam.capture(fn, format='jpg')

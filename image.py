@@ -32,3 +32,9 @@ class ImageCollect:
 
         if not config.Misc.testing:
             self._cam.capture(fn, format='png')
+
+
+if __name__ == '__main__':
+
+    ic = ImageCollect()
+    ic.get_image('/home/pi/', 'test.png')

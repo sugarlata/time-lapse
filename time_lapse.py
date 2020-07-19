@@ -3,7 +3,7 @@ import config
 
 
 from time import sleep
-from utilities import get_sun_times, ensure_directory_valid
+from utilities import get_sun_times, ensure_directory_is_valid
 from image import ImageCollect
 
 

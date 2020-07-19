@@ -18,7 +18,7 @@ class ImageCollect:
     def _create_cam(self):
 
         self._cam = PiCamera()
-        self._cam.resolution = (1024, 768)
+        self._cam.resolution = config.TLConfig.resolution
         self._cam.start_preview()
         sleep(3)
         self._start_preview_time = arrow.now().timestamp

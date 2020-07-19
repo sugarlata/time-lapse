@@ -7,7 +7,7 @@ from utilities import get_sun_times, ensure_directory_valid
 from image import ImageCollect
 
 
-class TimeLapse(Object):
+class TimeLapse:
 
     def __init__(self):
 

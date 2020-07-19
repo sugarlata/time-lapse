@@ -8,7 +8,7 @@ from io import BytesIO
 from picamera import PiCamera
 
 
-class ImageCollect(Object):
+class ImageCollect:
 
     def __init__(self):
 

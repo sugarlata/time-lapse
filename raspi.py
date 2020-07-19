@@ -39,7 +39,7 @@ def upload_to_server(stream, fn):
     ftp.cwd(sd.location)
     ftp.storbinary('STOR image.jpg', stream)
     ftp.quit()
-    
+
 
 if __name__ == '__main__':
     hostname = identify_hostname()

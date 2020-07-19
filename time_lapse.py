@@ -1,9 +1,10 @@
+import os
 import arrow
 import config
 
 
 from time import sleep
-from utilities import get_sun_times, ensure_directory_valid
+from utilities import get_sun_times, ensure_directory_is_valid
 from image import ImageCollect
 
 
@@ -22,12 +23,12 @@ class TimeLapse:
             str(arrow.now().day)
         )
 
-        self._img_loc = os.path.join(ARCHIVE_LOCATION, str(arrow.now().year), str(arrow.now().month), str(arrow.now().day))
+        self._img_loc = os.path.join(config.Misc.archive_location, str(arrow.now().year), str(arrow.now().month), str(arrow.now().day))
 
     def start_blocking_loop(self):
 
         # Sleep until alloted time
-        seconds_wait = (sun_times['dawn'] - 60 * config.TLConfig.minutes_before_dawn) - arrow.now().timestamp
+        seconds_wait = (self._sun_times['dawn'] - 60 * config.TLConfig.minutes_before_dawn) - arrow.now().timestamp
         if seconds_wait > 0:
             sleep(seconds_wait)
 
@@ -57,7 +58,7 @@ class TimeLapse:
     def _finish_loop(self):
 
         os.chdir(self._img_loc)
-        if config.TLConfig.printing:
-            print(config.Misc.cmd % self._video_name)
+        if config.Misc.printing:
+            print(config.Misc.cmd % self._vid_name)
 
-        os.system(config.Misc.cmd % self._video_name)
+        os.system(config.Misc.cmd % self._vid_name)

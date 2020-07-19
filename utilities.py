@@ -27,7 +27,7 @@ def get_sun_times(dt=datetime.datetime.now()):
     return resp
 
 
-def ensure_directory_valid(*args):
+def ensure_directory_is_valid(*args):
 
     base = ''
     for arg in args:

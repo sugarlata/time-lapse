@@ -1,5 +1,6 @@
 # Module to collect, store, and process images
 import os
+import arrow
 import config
 
 
@@ -28,10 +29,10 @@ class ImageCollect:
         if config.Misc.printing:
             print('Creating', fn)
 
-        time_wait = arrow.now().timestamp - self.start_preview_time
+        time_wait = arrow.now().timestamp - self._start_preview_time
 
         if time_wait > 0:
-            sleep(time_wait)     
+            sleep(time_wait)
 
         if not config.Misc.testing:
             stream = BytesIO()

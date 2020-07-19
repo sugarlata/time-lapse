@@ -3,6 +3,10 @@ import os
 import arrow
 import datetime
 
+
+from astral import Location
+
+
 def get_sun_times(dt=datetime.datetime.now()):
 
     loc = Location()

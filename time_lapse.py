@@ -45,7 +45,7 @@ class TimeLapse:
         while arrow.now().timestamp < final_time:
 
             self._img_cap.get_image(self._img_loc, str(arrow.now().timestamp))
-        
+
             if config.TLConfig.override:
                 if i > config.TLConfig.override:
                     break
@@ -53,7 +53,7 @@ class TimeLapse:
                     i += 1
 
             sleep(self._period)
-                
+
     def _finish_loop(self):
 
         os.chdir(self._img_loc)

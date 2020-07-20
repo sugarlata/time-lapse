@@ -53,10 +53,10 @@ class TimeLapse:
 
             self._img_cap.get_image(self._img_loc, str(arrow.now().timestamp))
 
-            if config.TLConfig.override:
-                if i > config.TLConfig.override:
+            if config.Misc.override:
+                if i > config.Misc.override:
                     break
-                
+
             i += 1
 
     def _finish_loop(self):

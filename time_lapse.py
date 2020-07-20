@@ -6,6 +6,7 @@ import config
 from time import sleep
 from utilities import get_sun_times, ensure_directory_is_valid
 from image import ImageCollect
+from cleanup import FTPMover
 
 
 class TimeLapse:
@@ -51,7 +52,7 @@ class TimeLapse:
             if wait_time > 0:
                 sleep(wait_time)
 
-            self._img_cap.get_image(self._img_loc, str(arrow.now().timestamp))
+            self._img_cap.get_image(self._img_loc, arrow.now())
 
             if config.TLConfig.override:
                 if i > config.TLConfig.override:
@@ -66,3 +67,5 @@ class TimeLapse:
             print(config.Misc.cmd % self._vid_name)
 
         os.system(config.Misc.cmd % self._vid_name)
+
+

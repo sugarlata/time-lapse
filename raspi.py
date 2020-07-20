@@ -27,6 +27,7 @@ def take_image(camera):
     camera.capture(stream, format='jpeg')
 
     stream.seek(0)
+    
 
     return stream
 

@@ -40,10 +40,10 @@ class ImageCollect:
             passwd=config.FTPServerDetails.password
         )
         
-        self._check_ftp_cwd(year, month, day)
+        self._check_ftp_exists(year, month, day)
         self._change_ftp_cwd(year, month, day)
 
-    def check_ftp_exists(self, year, month, day):
+    def _check_ftp_exists(self, year, month, day):
         self._ftp.cwd(config.FTPServerDetails.archive_location)
 
         if str(year) not in self._ftp.nlst():
@@ -70,7 +70,7 @@ class ImageCollect:
             str(day)
         ))
 
-    def change_ftp_cwd(self, year, month, day):
+    def _change_ftp_cwd(self, year, month, day):
         
         self._ftp.cwd(
             config.FTPServerDetails.archive_location,

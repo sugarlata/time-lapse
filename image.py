@@ -33,13 +33,13 @@ class ImageCollect:
         self._start_preview_time = arrow.now().timestamp
 
     def _connect_ftp(self, year, month, day):
-        
+
         self._ftp = FTP(config.FTPServerDetails.address)
         self._ftp.login(
             user=config.FTPServerDetails.username,
             passwd=config.FTPServerDetails.password
         )
-        
+
         self._check_ftp_exists(year, month, day)
         self._change_ftp_cwd(year, month, day)
 
@@ -47,12 +47,12 @@ class ImageCollect:
         self._ftp.cwd(config.FTPServerDetails.location)
 
         try:
-            file_list = self._ftp.nlst
+            file_list = self._ftp.nlst()
             if str(year) not in file_list:
                 self._ftp.mkd(str(year))
         except error_temp as e:
             self._ftp.mkd(str(year))
-        
+
         self._ftp.cwd(os.path.join(
             config.FTPServerDetails.location,
             str(year)
@@ -70,29 +70,29 @@ class ImageCollect:
             str(year),
             str(month)
         ))
-        
+
         try:
             file_list = self._ftp.nlst()
             if str(day) not in file_list:
                 self._ftp.mkd(str(day))
         except error_temp as e:
             self._ftp.mkd(str(day))
-            
+
         self._ftp.cwd(os.path.join(
             config.FTPServerDetails.location,
-            str(day),
+            str(year),
             str(month),
             str(day)
         ))
 
     def _change_ftp_cwd(self, year, month, day):
-        
-        self._ftp.cwd(
+
+        self._ftp.cwd(os.path.join(
             config.FTPServerDetails.location,
             str(year),
             str(month),
             str(day)
-        )
+        ))
 
     def _upload_to_ftp(self, stream, fn):
 
@@ -101,8 +101,8 @@ class ImageCollect:
     def get_image(self, img_loc, img_time):
 
         fn = '%s.png' % str(img_time.timestamp)
-        fn_full_path = os.path.join(img_loc, fn) 
-        
+        fn_full_path = os.path.join(img_loc, fn)
+
         if config.Misc.printing:
             print('Creating %s' % fn)
 
@@ -128,4 +128,4 @@ if __name__ == '__main__':
         arrow.now().month,
         arrow.now().day
     )
-    ic.get_image('/home/pi/', 'test.png')
+    ic.get_image('/home/pi/', arrow.now())

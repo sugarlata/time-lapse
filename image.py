@@ -3,7 +3,7 @@ import os
 import arrow
 import config
 
-from ftplib import FTP
+from ftplib import FTP, error_temp
 from time import sleep
 from io import BytesIO
 from picamera import PiCamera
@@ -46,23 +46,38 @@ class ImageCollect:
     def _check_ftp_exists(self, year, month, day):
         self._ftp.cwd(config.FTPServerDetails.location)
 
-        if str(year) not in self._ftp.nlst():
+        try:
+            file_list = self._ftp.nlst
+            if str(year) not in file_list:
+                self._ftp.mkd(str(year))
+        except error_temp as e:
             self._ftp.mkd(str(year))
+        
         self._ftp.cwd(os.path.join(
             config.FTPServerDetails.location,
             str(year)
         ))
 
-        if str(month) not in self._ftp.nlst():
+        try:
+            file_list = self._ftp.nlst()
+            if str(month) not in file_list:
+                self._ftp.mkd(str(month))
+        except error_temp as e:
             self._ftp.mkd(str(month))
+
         self._ftp.cwd(os.path.join(
             config.FTPServerDetails.location,
             str(year),
             str(month)
         ))
         
-        if str(day) not in self._ftp.nlst():
+        try:
+            file_list = self._ftp.nlst()
+            if str(day) not in file_list:
+                self._ftp.mkd(str(day))
+        except error_temp as e:
             self._ftp.mkd(str(day))
+            
         self._ftp.cwd(os.path.join(
             config.FTPServerDetails.location,
             str(day),

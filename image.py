@@ -44,19 +44,19 @@ class ImageCollect:
         self._change_ftp_cwd(year, month, day)
 
     def _check_ftp_exists(self, year, month, day):
-        self._ftp.cwd(config.FTPServerDetails.archive_location)
+        self._ftp.cwd(config.FTPServerDetails.location)
 
         if str(year) not in self._ftp.nlst():
             self._ftp.mkd(str(year))
         self._ftp.cwd(os.path.join(
-            config.FTPServerDetails.archive_location,
+            config.FTPServerDetails.location,
             str(year)
         ))
 
         if str(month) not in self._ftp.nlst():
             self._ftp.mkd(str(month))
         self._ftp.cwd(os.path.join(
-            config.FTPServerDetails.archive_location,
+            config.FTPServerDetails.location,
             str(year),
             str(month)
         ))
@@ -64,7 +64,7 @@ class ImageCollect:
         if str(day) not in self._ftp.nlst():
             self._ftp.mkd(str(day))
         self._ftp.cwd(os.path.join(
-            config.FTPServerDetails.archive_location,
+            config.FTPServerDetails.location,
             str(day),
             str(month),
             str(day)
@@ -73,7 +73,7 @@ class ImageCollect:
     def _change_ftp_cwd(self, year, month, day):
         
         self._ftp.cwd(
-            config.FTPServerDetails.archive_location,
+            config.FTPServerDetails.location,
             str(year),
             str(month),
             str(day)

@@ -108,5 +108,9 @@ class ImageCollect:
 
 if __name__ == '__main__':
 
-    ic = ImageCollect()
+    ic = ImageCollect(
+        arrow.now().year,
+        arrow.now().month,
+        arrow.now().day
+    )
     ic.get_image('/home/pi/', 'test.png')

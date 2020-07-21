@@ -17,11 +17,15 @@ class TimeLapse:
         self._sun_times = get_sun_times()
         self._period = config.TLConfig.period
 
+        self._year = arrow.now().year
+        self._month = arrow.now().month
+        self._day = arrow.now().day
+
         ensure_directory_is_valid(
             config.Misc.archive_location,
-            str(arrow.now().year),
-            str(arrow.now().month),
-            str(arrow.now().day)
+            str(self._year),
+            str(self._month),
+            str(self._day)
         )
 
         self._img_loc = os.path.join(config.Misc.archive_location, str(arrow.now().year), str(arrow.now().month), str(arrow.now().day))
@@ -34,13 +38,19 @@ class TimeLapse:
             sleep(seconds_wait)
 
         self._tl_loop()
-        self._finish_loop()
+    
+        if config.Misc.archive_host == 'local':
+            self._finish_loop()
 
     def _tl_loop(self):
 
         final_time = self._sun_times['dusk'] + 60 * config.TLConfig.minutes_after_sunset
 
-        self._img_cap = ImageCollect()
+        self._img_cap = ImageCollect(
+            self._year,
+            self._month,
+            self._day
+        )
 
         i = 0
 

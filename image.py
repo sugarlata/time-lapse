@@ -11,12 +11,12 @@ from picamera import PiCamera
 
 class ImageCollect:
 
-    def __init__(self):
+    def __init__(self, year, month, day):
 
         self._create_cam()
 
         if config.Misc.archive_host == 'ftp':
-            self._connect_ftp()
+            self._connect_ftp(year, month, day)
 
     def __del__(self):
         try:
@@ -32,13 +32,16 @@ class ImageCollect:
         sleep(3)
         self._start_preview_time = arrow.now().timestamp
 
-    def _connect_ftp(self):
+    def _connect_ftp(self, year, month, day):
         
         self._ftp = FTP(config.FTPServerDetails.address)
         self._ftp.login(
             user=config.FTPServerDetails.username,
             passwd=config.FTPServerDetails.password
         )
+        
+        self._check_ftp_cwd(year, month, day)
+        self._change_ftp_cwd(year, month, day)
 
     def check_ftp_exists(self, year, month, day):
         self._ftp.cwd(config.FTPServerDetails.archive_location)
@@ -76,23 +79,22 @@ class ImageCollect:
             str(day)
         )
 
-    def _upload_to_ftp(self, stream, fn, year, month, day):
+    def _upload_to_ftp(self, stream, fn):
 
-        self._check_ftp_cwd(year, month, day)
-        self._change_ftp_cwd(year, month, day)
         self._ftp.storbinary('STOR %s' % fn, stream)
 
     def get_image(self, img_loc, img_time):
 
-        fn = os.path.join(img_loc, '%s.png' % str(img_time.timestamp))
-
+        fn = '%s.png' % str(img_time.timestamp)
+        fn_full_path = os.path.join(img_loc, fn) 
+        
         if config.Misc.printing:
             print('Creating %s' % fn)
 
         if not config.Misc.testing:
 
             if config.Misc.archive_host == 'local':
-                self._cam.capture(fn, format='png')
+                self._cam.capture(fn_full_path, format='png')
 
             if config.Misc.archive_host == 'ftp':
                 stream = BytesIO()
@@ -100,10 +102,7 @@ class ImageCollect:
                 stream.seek(0)
                 self._upload_to_ftp(
                     stream,
-                    fn,
-                    img_time.year,
-                    img_time.month,
-                    img_time.day
+                    fn
                 )
 
 

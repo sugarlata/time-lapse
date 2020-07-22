@@ -38,7 +38,7 @@ class TimeLapse:
             sleep(seconds_wait)
 
         self._tl_loop()
-    
+
         if config.Misc.archive_host == 'local':
             self._finish_loop()
 
@@ -62,7 +62,10 @@ class TimeLapse:
             if wait_time > 0:
                 sleep(wait_time)
 
-            self._img_cap.get_image(self._img_loc, arrow.now())
+            try:
+                self._img_cap.get_image(self._img_loc, arrow.now())
+            except:
+                pass
 
             if config.Misc.override:
                 if i > config.Misc.override:

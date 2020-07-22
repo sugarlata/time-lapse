@@ -22,4 +22,4 @@ def render_video(shift_yesterday=False):
 
 if __name__ == '__main__':
 
-    render_video(shift_yesterday=True)
+    render_video(shift_yesterday=False)

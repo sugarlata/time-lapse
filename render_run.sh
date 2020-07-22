@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python /home/MAC/Development/time-lapse/render.py
+python /Users/MAC/Development/time-lapse/render.py

@@ -115,10 +115,13 @@ class ImageCollect:
                 stream = BytesIO()
                 self._cam.capture(stream, format='png')
                 stream.seek(0)
-                self._upload_to_ftp(
-                    stream,
-                    fn
-                )
+                try:
+                    self._upload_to_ftp(
+                        stream,
+                        fn
+                    )
+                except:
+                    pass
 
 
 if __name__ == '__main__':

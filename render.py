@@ -18,3 +18,8 @@ def render_video(shift_yesterday=False):
         str(yesterday.day)))
 
     os.system(config.Misc.cmd % vid_name)
+
+
+if __name__ == '__main__':
+
+    render_video(shift_yesterday=True)
